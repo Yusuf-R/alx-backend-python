@@ -18,9 +18,14 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
     Returns:
     - A list of the delays (in seconds) for each iteration.
     """
-    delays: List[float] = []
+    sorted_delays: List[float] = []
+    each_task: List = []
+
+    # get the list of time it takes for each callable
     for _ in range(n):
-        delay = await wait_random(max_delay)
-        delays.append(delay)
-    delays.sort()
-    return delays
+        each_task.append(wait_random(max_delay))
+
+    # get the sorted list
+    for task in asyncio.as_completed(each_task):
+        sorted_delays.append(await task)
+    return sorted_delays
