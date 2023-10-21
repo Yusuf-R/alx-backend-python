@@ -3,22 +3,31 @@
 import asyncio
 import time
 
-async_comprehension = __import__('1-async_comprehension').async_comprehension
+async_comprehension = __import__("1-async_comprehension").async_comprehension
 
 
-async def measure_runtime() -> float:
+async def measure_runtime():
     """
-        measure time and execute in paralallel
+    Asynchronously measures the runtime of a function.
 
-        Args:
-            void
+    - This function uses the `asyncio.gather()`function to concurrently execute
+    the `async_comprehension()` function multiple times.
+    - It creates a list comprehension that repeats the
+    `async_comprehension()` function 4 times.
+    - The `asyncio.gather()` function is then used to execute all
+    the `async_comprehension()` instances concurrently.
 
-        Return:
-            float random numbers
+    Returns:
+        A list of results from executing the
+        `async_comprehension()` function 4 times concurrently.
+
+    Raises:
+        Any exceptions raised by the `async_comprehension()` function.
+
+    Example Usage:
+        result = await measure_runtime()
     """
-    first_time = time.perf_counter()
-    tasks = [async_comprehension() for _ in range(4)]
-    await asyncio.gather(*tasks)
-    elapsed = time.perf_counter()
-
-    return (elapsed - first_time)
+    start_time = time.perf_counter()
+    await asyncio.gather(*[async_comprehension() for _ in range(4)])
+    stop_time = time.perf_counter()
+    return stop_time - start_time
