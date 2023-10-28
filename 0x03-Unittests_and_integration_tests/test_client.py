@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """ Unit Test and Integration Test"""
 import unittest
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from unittest.mock import patch, PropertyMock
 
+
 GithubOrgClient = __import__("client").GithubOrgClient
-utils = __import__("utils")
-client = __import__("client")
+TEST_PAYLOAD = __import__("fixtures").TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -75,6 +75,50 @@ class TestGithubOrgClient(unittest.TestCase):
         """Test has_license method"""
         test_client = GithubOrgClient("google")
         self.assertEqual(test_client.has_license(repo, linc_key), result)
+
+
+@parameterized_class(
+    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
+    (TEST_PAYLOAD)
+)
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """TestIntegrationGithubOrgClient class"""
+
+    @classmethod
+    def setUpClass(cls):
+        """set up class"""
+        cls.get_patcher = patch("requests.get")
+        cls.mock = cls.get_patcher.start()
+        cls.mock.return_value.json.side_effect = [
+            cls.org_payload,
+            cls.repos_payload,
+            cls.org_payload,
+            cls.repos_payload,
+        ]
+
+    @classmethod
+    def tearDownClass(cls):
+        """tear down class"""
+        cls.get_patcher.stop()
+
+    def test_public_repos(self):
+        """ Integration test: public repos"""
+        test_class = GithubOrgClient("google")
+        self.assertEqual(test_class.org, self.org_payload)
+        self.assertEqual(test_class.repos_payload, self.repos_payload)
+        self.assertEqual(test_class.public_repos(), self.expected_repos)
+        self.assertEqual(test_class.public_repos("TAVISH"), [])
+        self.mock.assert_called()
+
+    def test_public_repos_with_license(self):
+        """ Integration test for public repos with License """
+        test_class = GithubOrgClient("google")
+        self.assertEqual(test_class.org, self.org_payload)
+        self.assertEqual(test_class.public_repos(), self.expected_repos)
+        self.assertEqual(test_class.public_repos("TAVISH"), [])
+        self.assertEqual(test_class.public_repos(
+            "apache-2.0"), self.apache2_repos)
+        self.mock.assert_called()
 
 
 if __name__ == "__main__":
