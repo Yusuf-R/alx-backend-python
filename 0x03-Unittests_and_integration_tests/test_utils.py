@@ -51,8 +51,11 @@ class TestGetJson(unittest.TestCase):
 
 class TestMemoize(unittest.TestCase):
     """ Test memoize """
-
-    def test_memoize(self):
+    @parameterized.expand([
+        (1,),
+        (2,),
+    ])
+    def test_memoize(self, n):
         """ Test memoize """
         class TestClass:
             """ Test class """
@@ -74,6 +77,7 @@ class TestMemoize(unittest.TestCase):
             res = test_obj.a_property
             self.assertEqual(res, 42)
             mock_method.assert_called_once()
+            mock_method.reset_mock()
 
 
 if __name__ == "__main__":
