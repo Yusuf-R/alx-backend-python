@@ -77,7 +77,6 @@ class TestMemoize(unittest.TestCase):
             res = test_obj.a_property
             self.assertEqual(res, 42)
             mock_method.assert_called_once()
-            mock_method.reset_mock()
 
 
 if __name__ == "__main__":
