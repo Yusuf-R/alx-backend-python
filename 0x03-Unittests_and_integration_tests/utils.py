@@ -77,16 +77,25 @@ def memoize(fn: Callable) -> Callable:
   
   
 if __name__ == "__main__":
-  nested_map = {"a": 1}
-  path=("a",)
-  print(access_nested_map(nested_map, path))
+  print("Hi")
+  # nested_map = {"a": 1}
+  # path=("a",)
+  # print(access_nested_map(nested_map, path))
 
 
-  nested_map={"a": {"b": 2}}
-  path=("a",)
-  print(access_nested_map(nested_map, path))
+  # nested_map={"a": {"b": 2}}
+  # path=("a",)
+  # print(access_nested_map(nested_map, path))
   
   
-  nested_map={"a": {"b": 2}}
-  path=("a", "b")
-  print(access_nested_map(nested_map, path))
+  # nested_map={"a": {"b": 2}}
+  # path=("a", "b")
+  # print(access_nested_map(nested_map, path))
+  
+  # nested_map={}
+  # path=("a",)
+  # print(access_nested_map(nested_map, path))
+  
+  # nested_map={"a": 1}
+  # path=("a", "b")
+  # print(access_nested_map(nested_map, path))
