@@ -2,7 +2,6 @@
 """ Unit Test and Integration Test"""
 
 import unittest
-from typing import Any, Dict, List, Tuple
 from parameterized import parameterized
 from unittest.mock import Mock, patch
 access_nested_map = __import__('utils').access_nested_map
@@ -21,7 +20,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a",), {'b': 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2)
     ])
-    def test_access_nested_map(self, nested_map: Dict[str, Any], path: Tuple[str, ...], result: Any) -> None:
+    def test_access_nested_map(self, nested_map, path, result):
         """ Test access_nested_map """
         self.assertEqual(access_nested_map(nested_map, path), result)
 
@@ -29,7 +28,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({}, ("a",)),
         ({"a": 1}, ("a", "b"))
     ])
-    def test_access_nested_map_exception(self, nested_map: Dict[str, Any], path: Tuple[str, ...]) -> None:
+    def test_access_nested_map_exception(self, nested_map, path):
         """ Test exception access_nested_map """
         with self.assertRaises(KeyError):
             access_nested_map(nested_map, path)
@@ -40,7 +39,7 @@ class TestGetJson(unittest.TestCase):
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False}),
     ])
-    def test_get_json(self, test_url: str, test_payload: Dict[str, Any]) -> None:
+    def test_get_json(self, test_url, test_payload):
         """ Test get_json """
         with patch('utils.requests.get') as mock_get:
             mock_get.return_value.ok = True
@@ -53,17 +52,17 @@ class TestGetJson(unittest.TestCase):
 class TestMemoize(unittest.TestCase):
     """ Test memoize """
 
-    def test_memoize(self) -> None:
+    def test_memoize(self):
         """ Test memoize """
         class TestClass:
             """ Test class """
 
-            def a_method(self) -> int:
+            def a_method(self):
                 """ Test a_method """
                 return 42
 
             @memoize
-            def a_property(self) -> int:
+            def a_property(self):
                 """ a property method"""
                 return self.a_method()
 
