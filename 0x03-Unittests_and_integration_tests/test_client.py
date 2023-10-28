@@ -46,7 +46,8 @@ class TestGithubOrgClient(unittest.TestCase):
     )
     def test_public_repos(self, mock_url, mock_get_json):
         # Set up mock return values
-        mock_url.return_value = "https://api.github.com/orgs/google/repos"
+        url = "https://api.github.com/orgs/google/repos"
+        mock_url.return_value = url
         mock_get_json.return_value = [{"name": "repo1"}, {"name": "repo2"}]
 
         # Create an instance of GithubOrgClient
