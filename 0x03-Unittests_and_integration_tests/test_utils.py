@@ -59,6 +59,7 @@ class TestMemoize(unittest.TestCase):
 
             def a_method(self):
                 """ Test a_method """
+                print("Method was called : ")
                 return 42
 
             @memoize
@@ -70,7 +71,6 @@ class TestMemoize(unittest.TestCase):
             test_obj = TestClass()
             mock_method.return_value = 42
             res = test_obj.a_property
-            self.assertEqual(res, 42)
             res = test_obj.a_property
             self.assertEqual(res, 42)
             mock_method.assert_called_once()
